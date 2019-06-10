@@ -1,5 +1,5 @@
 import BaseApi from './BaseApi';
-import jwt from 'jsonwebtoken';
+// import jwt from 'jsonwebtoken';
 import merryAgent from './agent';
 
 export default class UserApi extends BaseApi {

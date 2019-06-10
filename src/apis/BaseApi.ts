@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosResponse, AxiosRequestConfig } from 'axios';
+import { AxiosInstance, AxiosResponse, AxiosRequestConfig } from 'axios';
 import merryAgent from './agent';
 
 export enum HttpMethods {
