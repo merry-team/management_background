@@ -13,13 +13,11 @@ export interface Notice {
   (type: NoticeType, title: string, content?: string): void;
 }
 
-export const notice: Notice = (
-  type: NoticeType,
-  title: string,
-  content?: string
-) => {
+const notice: Notice = (type: NoticeType, title: string, content?: string) => {
   notification[type]({
     message: title,
     description: content
   });
 };
+
+export default notice;

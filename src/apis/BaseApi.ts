@@ -1,7 +1,6 @@
-import { AxiosInstance, AxiosResponse, AxiosRequestConfig } from "axios";
+import { AxiosInstance, AxiosRequestConfig } from "axios";
 import merryAgent from "./agent";
-import { message } from "antd";
-import { notice } from "../components/Notice";
+import notice from "../components/Notice";
 
 export enum HttpMethods {
   GET = "get",
@@ -67,28 +66,12 @@ export default class BaseApi {
       requestConfig.data = (config as PostConfig).data || {};
     }
 
-    // 返回拦截器
-    this.agent.interceptors.response.use((req: AxiosResponse) => {
-      switch (req.status) {
-        case 401:
-          return Promise.reject("登录失效");
-        case 403:
-          return Promise.reject("没有权限");
-        case 422:
-          return Promise.reject("无法处理的错误");
-        case 500:
-          return Promise.reject("服务器错误");
-        default:
-          return req;
-      }
-    });
-
     try {
       const result = await this.agent.request(requestConfig);
 
       return result.data;
     } catch (error) {
-      notice("error", error.message);
+      notice("error", error.errors ? error.errors : error.message);
       throw error;
     }
   }
