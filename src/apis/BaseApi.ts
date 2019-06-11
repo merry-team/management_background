@@ -1,12 +1,14 @@
-import { AxiosInstance, AxiosResponse, AxiosRequestConfig } from 'axios';
-import merryAgent from './agent';
+import { AxiosInstance, AxiosResponse, AxiosRequestConfig } from "axios";
+import merryAgent from "./agent";
+import { message } from "antd";
+import { notice } from "../components/Notice";
 
 export enum HttpMethods {
-  GET = 'get',
-  POST = 'post',
-  PUT = 'put',
-  DELETE = 'delete',
-  PATCH = 'patch'
+  GET = "get",
+  POST = "post",
+  PUT = "put",
+  DELETE = "delete",
+  PATCH = "patch"
 }
 
 interface BaseConfig {
@@ -48,13 +50,13 @@ export default class BaseApi {
   private async request<T>(
     method: HttpMethods,
     config: BaseConfig | PostConfig,
-    extra: AxiosRequestConfig = {},
+    extra: AxiosRequestConfig = {}
   ): Promise<T> {
     const requestConfig: AxiosRequestConfig = {
       method,
       url: config.url,
       params: config.params || {},
-      ...extra,
+      ...extra
     };
     if (
       method === HttpMethods.POST ||
@@ -69,13 +71,13 @@ export default class BaseApi {
     this.agent.interceptors.response.use((req: AxiosResponse) => {
       switch (req.status) {
         case 401:
-          return Promise.reject('登录失效');
+          return Promise.reject("登录失效");
         case 403:
-          return Promise.reject('没有权限');
+          return Promise.reject("没有权限");
         case 422:
-          return Promise.reject('无法处理的错误');
+          return Promise.reject("无法处理的错误");
         case 500:
-          return Promise.reject('服务器错误');
+          return Promise.reject("服务器错误");
         default:
           return req;
       }
@@ -86,6 +88,7 @@ export default class BaseApi {
 
       return result.data;
     } catch (error) {
+      notice("error", error.message);
       throw error;
     }
   }
