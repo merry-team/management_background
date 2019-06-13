@@ -69,7 +69,9 @@ export default class BaseApi {
     try {
       const result = await this.agent.request(requestConfig);
 
-      return result.data;
+      return result.data.resource
+        ? result.data.resource
+        : (result.data.resources as T);
     } catch (error) {
       notice("error", error.errors ? error.errors : error.message);
       throw error;

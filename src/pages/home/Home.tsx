@@ -6,14 +6,29 @@ import GameTemplate from "./game-template/GameTemplate";
 import GameTemplateDetail from "./game-template-detail/GameTemplateDetail";
 import Task from "./task/Task";
 import TaskDetail from "./task-detail/TaskDetail";
+import { inject, observer } from "mobx-react";
+import UserStore from "../../stores/UserStore";
 
 const { Header, Content, Footer } = Layout;
 
-export default class Home extends Component<{}> {
+interface HomeProps {
+  userStore?: UserStore;
+}
+
+@inject("userStore")
+@observer
+export default class Home extends Component<HomeProps> {
   render() {
+    const loginUser = this.props.userStore!.loginUser;
+    if (!loginUser) {
+      return <Redirect to="/login" />;
+    }
+
     return (
       <Layout className="layout">
-        <Header className="header" />
+        <Header className="header">
+          <div style={{ color: "#fff" }}>{loginUser.name}</div>
+        </Header>
         <Content>
           <Switch>
             <Route

@@ -7,4 +7,4 @@ import UserStore from "./UserStore";
 export const routingStore = new RouterStore();
 export const gameTemplateStore = new GameTemplateStore(gameTemplateApi);
 export const taskStore = new TaskStore(taskApi);
-export const userStore = new UserStore(userApi);
+export const userStore = new UserStore(userApi, routingStore);
