@@ -1,15 +1,32 @@
 import BaseApi from "./BaseApi";
+import Base from "./interface/Base";
+import { Pager } from "./interface/Base";
+import GameTemplate from "./interface/GameTemplate";
+import GameTemplateModel from "../models/GameTemplateModel";
 
 export default class GameTemplateApi extends BaseApi {
   /**
    * 获取游戏模板列表
    */
-  async getGameTemplates() {
-    const res = await this.get({
+  async getGameTemplates(): Promise<{
+    pager: Pager;
+    gameTemplateList: GameTemplateModel[];
+  }> {
+    const res = await this.get<Base<GameTemplate[]>>({
       url: "/api/v1/game_templates"
     });
 
-    return res;
+    const temp: {
+      pager: Pager;
+      gameTemplateList: GameTemplateModel[];
+    } = {
+      pager: res.pager!,
+      gameTemplateList: res.resources!.map(
+        resource => new GameTemplateModel(resource)
+      )
+    };
+
+    return temp;
   }
 
   /**

@@ -10,7 +10,7 @@ merryAgent.interceptors.response.use(
     if (req.headers["t-jwt"]) {
       const token = req.headers["t-jwt"];
       merryAgent.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      localStorage.setItem("MERRY_ADMIN_TOKEN", token);
+      localStorage.setItem("MERRY_TOKEN", token);
     }
     return req;
   },

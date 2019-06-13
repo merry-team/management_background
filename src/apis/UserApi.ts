@@ -3,19 +3,20 @@ import BaseApi from "./BaseApi";
 import merryAgent from "./agent";
 import User from "./interface/User";
 import UserModel from "../models/UserModel";
+import Base from "./interface/Base";
 
 export default class UserApi extends BaseApi {
   async adminLogin(account: string, password: string): Promise<UserModel> {
-    const res = await this.post<User>({
+    const res = await this.post<Base<User>>({
       url: "/api/v1/sign_in/admin_user",
       data: { account, password }
     });
 
-    return new UserModel(res);
+    return new UserModel(res.resource!);
   }
 
   logout() {
-    localStorage.removeItem("MERRY_ADMIN_TOKEN");
+    localStorage.removeItem("MERRY_TOKEN");
     this.removeAgentAuthorization();
   }
 

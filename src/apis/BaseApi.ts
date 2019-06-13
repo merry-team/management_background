@@ -24,7 +24,12 @@ interface DeleteConfig extends BaseConfig {
 }
 
 export default class BaseApi {
-  constructor(protected agent: AxiosInstance = merryAgent) {}
+  constructor(protected agent: AxiosInstance = merryAgent) {
+    const token = localStorage.getItem("MERRY_TOKEN");
+    if (token) {
+      agent.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    }
+  }
 
   async get<T>(config: BaseConfig, extra?: AxiosRequestConfig) {
     return this.request<T>(HttpMethods.GET, config, extra);
@@ -69,9 +74,7 @@ export default class BaseApi {
     try {
       const result = await this.agent.request(requestConfig);
 
-      return result.data.resource
-        ? result.data.resource
-        : (result.data.resources as T);
+      return result.data;
     } catch (error) {
       notice("error", error.errors ? error.errors : error.message);
       throw error;
