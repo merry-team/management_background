@@ -17,9 +17,20 @@ export default class GameTemplate extends Component<
   GameTemplateProps,
   GameTemplateState
 > {
+  constructor(props: GameTemplateProps) {
+    super(props);
+    this.state = {
+      loading: true
+    };
+  }
+
   componentDidMount() {
     const gameTemplateStore = this.props.gameTemplateStore!;
-    gameTemplateStore.getGameTemplates();
+    gameTemplateStore.getGameTemplates().then(res => {
+      this.setState({
+        loading: false
+      });
+    });
   }
 
   render() {

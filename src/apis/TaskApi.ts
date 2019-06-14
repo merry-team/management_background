@@ -1,20 +1,35 @@
-import BaseApi from './BaseApi';
+import BaseApi from "./BaseApi";
+import { Pager } from "./interface/Base";
+import TaskModel from "../models/TaskModel";
+import Base from "./interface/Base";
+import Task from "./interface/Task";
 
 export default class TaskApi extends BaseApi {
   /**
    * 获取任务列表
    */
-  async getTasks() {
-    const res = await this.get<any>({
-      url: '/api/v1/tasks'
+  async getTasks(): Promise<{
+    pager: Pager;
+    taskList: TaskModel[];
+  }> {
+    const res = await this.get<Base<Task[]>>({
+      url: "/api/v1/tasks"
     });
 
-    return res.resources;
+    const temp: {
+      pager: Pager;
+      taskList: TaskModel[];
+    } = {
+      pager: res.pager!,
+      taskList: res.resources!.map(resource => new TaskModel(resource))
+    };
+
+    return temp;
   }
 
   /**
    * show某个任务
-   * @param id 
+   * @param id
    */
   async showTask(id: string) {
     const res = await this.get<any>({
@@ -33,7 +48,7 @@ export default class TaskApi extends BaseApi {
     reward_score: string
   ) {
     const res = await this.post<any>({
-      url: '/api/v1/tasks',
+      url: "/api/v1/tasks",
       data: { game_template_id, challenge_score, reward_score }
     });
   }

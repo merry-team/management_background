@@ -1,6 +1,7 @@
 import GameTemplateApi from "../apis/GameTemplateApi";
 import { Pager } from "../apis/interface/Base";
 import GameTemplateModel from "../models/GameTemplateModel";
+
 export default class GameTemplateStore {
   api: GameTemplateApi;
   pager: Pager | null = null;
