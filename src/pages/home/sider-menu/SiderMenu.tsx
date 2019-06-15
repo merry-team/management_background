@@ -3,6 +3,7 @@ import { Menu, Icon } from "antd";
 import "./SiderMenu.scss";
 import { inject, observer } from "mobx-react";
 import SiderMenuStore from "../../../stores/SiderMenuStore";
+import { Link } from "react-router-dom";
 
 const MenuItem = Menu.Item;
 
@@ -19,15 +20,27 @@ const IconFont = Icon.createFromIconfontCN({
 @observer
 export default class SiderMenu extends Component<SiderMenuProps> {
   render() {
+    const siderMenuStore = this.props.siderMenuStore!;
+    const { currentRoute } = siderMenuStore;
+
     return (
-      <Menu className="sider-menu" theme="dark" mode="inline">
-        <MenuItem className="sider-menu-item">
-          <IconFont type="icon-game" />
-          <span>Game Templates</span>
+      <Menu
+        className="sider-menu"
+        theme="dark"
+        mode="inline"
+        selectedKeys={[currentRoute]}
+      >
+        <MenuItem className="sider-menu-item" key="game_templates">
+          <Link to="/game_templates">
+            <IconFont type="icon-game" />
+            <span>Game Templates</span>
+          </Link>
         </MenuItem>
-        <MenuItem className="sider-menu-item">
-          <IconFont type="icon-task" />
-          <span>Tasks</span>
+        <MenuItem className="sider-menu-item" key="tasks">
+          <Link to="/tasks">
+            <IconFont type="icon-task" />
+            <span>Tasks</span>
+          </Link>
         </MenuItem>
       </Menu>
     );
