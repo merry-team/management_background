@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./User.scss";
-import { observer, inject } from "mobx-react";
 import UserStore from "../../../stores/UserStore";
 
 interface UserProps {
@@ -14,7 +13,7 @@ const User: React.FunctionComponent<UserProps> = () => {
 
   async function fetchUsers() {}
 
-  return <div className="userComponent"></div>;
+  return <div className="userComponent">123123</div>;
 };
 
 export default User;
