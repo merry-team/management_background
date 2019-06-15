@@ -8,7 +8,7 @@ export default class TaskModel {
   creator: User;
   game_template: GameTemplateModel;
   lasted: boolean;
-  reward_score: 1000;
+  reward_score: number;
 
   constructor(task: Task) {
     this.challenge_score = task.challenge_score;

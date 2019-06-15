@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Layout, Menu, Icon } from "antd";
+import { Layout, Icon, Avatar } from "antd";
 import { Route, Switch, Redirect } from "react-router-dom";
 import "./Home.scss";
 import GameTemplate from "./game-template/GameTemplate";
@@ -8,17 +8,21 @@ import Task from "./task/Task";
 import TaskDetail from "./task-detail/TaskDetail";
 import { inject, observer } from "mobx-react";
 import UserStore from "../../stores/UserStore";
+import SiderMenu from "./sider-menu/SiderMenu";
 
 const { Header, Content, Footer, Sider } = Layout;
-const MenuItem = Menu.Item;
 
 interface HomeProps {
   userStore?: UserStore;
 }
 
+interface HomeState {
+  collapsed: boolean;
+}
+
 @inject("userStore")
 @observer
-export default class Home extends Component<HomeProps> {
+export default class Home extends Component<HomeProps, HomeState> {
   constructor(props: HomeProps) {
     super(props);
     this.state = {
@@ -26,23 +30,43 @@ export default class Home extends Component<HomeProps> {
     };
   }
 
+  toggle = () => {
+    this.setState({
+      collapsed: !this.state.collapsed
+    });
+  };
+
   render() {
     const loginUser = this.props.userStore!.loginUser;
+    const collapsed = this.state.collapsed;
     if (!loginUser) {
       return <Redirect to="/login" />;
     }
 
     return (
       <Layout className="layout">
-        <Header className="header">{loginUser.name}</Header>
+        <Sider
+          className="sider"
+          trigger={null}
+          collapsible
+          collapsed={collapsed}
+        >
+          <div className="logo">Management Background</div>
+          <SiderMenu inlineCollapsed={collapsed} />
+        </Sider>
         <Layout>
-          <Sider width={200} theme="light">
-            <Menu>
-              <MenuItem>Game Templates</MenuItem>
-              <MenuItem>Tasks</MenuItem>
-            </Menu>
-          </Sider>
-          <Content>
+          <Header className="header">
+            <Icon
+              className="trigger"
+              type={collapsed ? "menu-unfold" : "menu-fold"}
+              onClick={this.toggle}
+            />
+            <div className="user-profile">
+              <Avatar className="user-avatar" icon="user" />
+              {loginUser.name}
+            </div>
+          </Header>
+          <Content className="content">
             <Switch>
               <Route
                 path="/"
@@ -63,8 +87,8 @@ export default class Home extends Component<HomeProps> {
               {/* <Route render={() => <div>404</div>} /> */}
             </Switch>
           </Content>
+          <Footer />
         </Layout>
-        <Footer />
       </Layout>
     );
   }

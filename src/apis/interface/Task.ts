@@ -9,5 +9,5 @@ export default interface Task extends BaseEntity {
   game_template: GameTemplate;
   game_template_id: number;
   lasted: boolean;
-  reward_score: 1000;
+  reward_score: number;
 }
