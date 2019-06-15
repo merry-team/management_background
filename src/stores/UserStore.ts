@@ -2,11 +2,14 @@ import UserApi from "../apis/UserApi";
 import { action, observable } from "mobx";
 import UserModel from "../models/UserModel";
 import { RouterStore } from "mobx-react-router";
+import { Pager } from "../apis/interface/Base";
 import { routingStore } from "./index";
 
 export default class UserStore {
   api: UserApi;
   routingStore: RouterStore;
+  pager: Pager | null = null;
+  userList: any[] = [];
 
   @observable
   loginUser: UserModel | null = null;
@@ -26,5 +29,11 @@ export default class UserStore {
     this.loginUser = user;
     localStorage.setItem("userInfo", JSON.stringify(user));
     this.routingStore.push("/");
+  }
+
+  async getTasks() {
+    const res = await this.api.getUsers();
+    this.pager = res.pager;
+    this.userList = res.userList;
   }
 }

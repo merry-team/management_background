@@ -1,6 +1,7 @@
 import BaseApi from "./BaseApi";
 // import jwt from 'jsonwebtoken';
 import merryAgent from "./agent";
+import { Pager } from "./interface/Base";
 import User from "./interface/User";
 import UserModel from "../models/UserModel";
 import Base from "./interface/Base";
@@ -18,6 +19,25 @@ export default class UserApi extends BaseApi {
   logout() {
     localStorage.removeItem("MERRY_TOKEN");
     this.removeAgentAuthorization();
+  }
+
+  async getUsers(): Promise<{
+    pager: Pager;
+    userList: UserModel[];
+  }> {
+    const res = await this.get<Base<User[]>>({
+      url: "/api/v1/users"
+    });
+
+    const temp: {
+      pager: Pager;
+      userList: UserModel[];
+    } = {
+      pager: res.pager!,
+      userList: res.resources!.map(resource => new UserModel(resource))
+    };
+
+    return temp;
   }
 
   /**
