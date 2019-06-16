@@ -16,7 +16,6 @@
   .header {
     padding: 0 16px;
     background: #fff;
-    border-bottom: 1px solid grey;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -44,7 +43,7 @@
     min-height: 280px;
     padding: 24px;
     background: #f9fafb;
-
+    overflow-x: auto;
     display: flex;
     flex-direction: column;
     flex: 1;

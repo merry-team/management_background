@@ -15,4 +15,8 @@ export default class TaskStore {
     this.pager = res.pager;
     this.taskList = res.taskList;
   }
+
+  async deleteTask(id: number) {
+    await this.api.deleteTask(id);
+  }
 }

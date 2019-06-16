@@ -3,8 +3,16 @@ import Base from "./interface/Base";
 import { Pager } from "./interface/Base";
 import GameTemplate from "./interface/GameTemplate";
 import GameTemplateModel from "../models/GameTemplateModel";
+import UserApi from "./UserApi";
 
 export default class GameTemplateApi extends BaseApi {
+  userApi: UserApi;
+
+  constructor(userApi: UserApi) {
+    super();
+    this.userApi = userApi;
+  }
+
   /**
    * 获取游戏模板列表
    */
@@ -16,29 +24,24 @@ export default class GameTemplateApi extends BaseApi {
       url: "/api/v1/game_templates"
     });
 
-    const temp: {
-      pager: Pager;
-      gameTemplateList: GameTemplateModel[];
-    } = {
+    return {
       pager: res.pager!,
       gameTemplateList: res.resources!.map(
-        resource => new GameTemplateModel(resource)
+        (resource: GameTemplate) => new GameTemplateModel(resource)
       )
     };
-
-    return temp;
   }
 
   /**
-   * show某个游戏模板
+   * get某个游戏模板
    * @param id
    */
-  async showGameTemplate(id: string) {
-    const res = await this.get({
+  async getGameTemplate(id: number): Promise<GameTemplateModel> {
+    const res = await this.get<Base<GameTemplate>>({
       url: `/api/v1/game_templates/${id}`
     });
 
-    return res;
+    return new GameTemplateModel(res.resource!);
   }
 
   /**
@@ -94,7 +97,7 @@ export default class GameTemplateApi extends BaseApi {
     });
   }
 
-  async deleteGameTemplate(id: string) {
+  async deleteGameTemplate(id: number) {
     await this.delete({
       url: `/api/v1/game_templates/${id}`
     });

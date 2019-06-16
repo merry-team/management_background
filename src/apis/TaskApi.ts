@@ -28,10 +28,10 @@ export default class TaskApi extends BaseApi {
   }
 
   /**
-   * show某个任务
+   * get某个任务
    * @param id
    */
-  async showTask(id: string) {
+  async getTask(id: string) {
     const res = await this.get<any>({
       url: `/api/v1/tasks/${id}`
     });
@@ -71,8 +71,8 @@ export default class TaskApi extends BaseApi {
   /**
    * 删除任务
    */
-  async deleteTask(id: string) {
-    const res = await this.delete<any>({
+  async deleteTask(id: number) {
+    const res = await this.delete({
       url: `/api/v1/tasks/${id}`
     });
   }

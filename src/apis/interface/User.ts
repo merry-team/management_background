@@ -2,7 +2,7 @@ import { BaseEntity } from "./Base";
 
 export type RoleType = "admin" | "guest";
 
-interface Role extends BaseEntity {
+export interface Role extends BaseEntity {
   name: RoleType;
   resource_id: string;
   resource_type: string;

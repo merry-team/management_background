@@ -1,9 +1,9 @@
 import BaseApi from "./BaseApi";
-// import jwt from 'jsonwebtoken';
 import merryAgent from "./agent";
 import User from "./interface/User";
 import UserModel from "../models/UserModel";
 import Base from "./interface/Base";
+import { Role } from "./interface/User";
 
 export default class UserApi extends BaseApi {
   async adminLogin(account: string, password: string): Promise<UserModel> {
@@ -32,6 +32,28 @@ export default class UserApi extends BaseApi {
     });
 
     return res;
+  }
+
+  /**
+   * 获取用户信息
+   * @param userId
+   */
+  async getUserInfo(userId: number): Promise<User> {
+    return {
+      id: 5,
+      created_at: "xxx",
+      updated_at: "xxx",
+      account: "Lucien",
+      avatar: "abc",
+      name: "Lucien",
+      roles: [
+        {
+          name: "admin",
+          resource_id: "fff",
+          resource_type: "ggg"
+        }
+      ] as Role[]
+    };
   }
 
   private removeAgentAuthorization() {
