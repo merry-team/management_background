@@ -5,6 +5,7 @@ import GameTemplateStore from "stores/GameTemplateStore";
 import { Table, Dropdown, Icon, Menu, Popconfirm } from "antd";
 import GameTemplateModel from "../../../models/GameTemplateModel";
 import { Link } from "react-router-dom";
+import { gameTemplateStore } from "../../../stores/index";
 
 const MenuItem = Menu.Item;
 
@@ -119,6 +120,11 @@ export default class GameTemplate extends Component<
     });
   };
 
+  selectGameTemplate = async (gameTemplate: GameTemplateModel) => {
+    const gameTemplateStore = this.props.gameTemplateStore!;
+    gameTemplateStore.selectGameTemplate(gameTemplate);
+  };
+
   deleteGameTemplate = async (id: number) => {
     const gameTemplateStore = this.props.gameTemplateStore!;
     await gameTemplateStore.deleteGameTemplate(id).then(res => {
@@ -187,7 +193,10 @@ export default class GameTemplate extends Component<
                     overlay={
                       <Menu>
                         <MenuItem>
-                          <Link to={`/game_templates/${record.id}`}>
+                          <Link
+                            to={`/game_templates/${record.id}`}
+                            onClick={() => this.selectGameTemplate(record)}
+                          >
                             View Detail
                           </Link>
                         </MenuItem>
