@@ -1,16 +1,16 @@
 import React, { Component } from "react";
-import { Layout, Icon, Avatar } from "antd";
+import { Layout, Icon, Avatar, Dropdown, Menu } from "antd";
 import { Route, Switch, Redirect } from "react-router-dom";
 import "./Home.scss";
 import GameTemplate from "./game-template/GameTemplate";
 import GameTemplateDetail from "./game-template-detail/GameTemplateDetail";
-import Task from "./task/Task";
 import TaskDetail from "./task-detail/TaskDetail";
 import { inject, observer } from "mobx-react";
 import UserStore from "../../stores/UserStore";
 import SiderMenu from "./sider-menu/SiderMenu";
 
 const { Header, Content, Footer, Sider } = Layout;
+const MenuItem = Menu.Item;
 
 interface HomeProps {
   userStore?: UserStore;
@@ -34,6 +34,11 @@ export default class Home extends Component<HomeProps, HomeState> {
     this.setState({
       collapsed: !this.state.collapsed
     });
+  };
+
+  logout = () => {
+    const userStore = this.props.userStore!;
+    userStore.logout();
   };
 
   render() {
@@ -64,6 +69,7 @@ export default class Home extends Component<HomeProps, HomeState> {
             <div className="user-profile">
               <Avatar className="user-avatar" icon="user" />
               {loginUser.name}
+              <Icon className="logout" type="logout" onClick={this.logout} />
             </div>
           </Header>
           <Content className="content">
@@ -79,11 +85,15 @@ export default class Home extends Component<HomeProps, HomeState> {
                 component={GameTemplate}
               />
               <Route
+                exact={true}
                 path="/game_templates/:gid"
                 component={GameTemplateDetail}
               />
-              <Route exact={true} path="/tasks" component={Task} />
-              <Route path="/tasks/:tid" component={TaskDetail} />
+              {/* <Route exact={true} path="/game_templates/:gid/tasks" component={Task} /> */}
+              <Route
+                path="/game_templates/:gid/tasks/:tid"
+                component={TaskDetail}
+              />
               {/* <Route render={() => <div>404</div>} /> */}
             </Switch>
           </Content>

@@ -36,12 +36,6 @@ export default class SiderMenu extends Component<SiderMenuProps> {
             <span>Game Templates</span>
           </Link>
         </MenuItem>
-        <MenuItem className="sider-menu-item" key="tasks">
-          <Link to="/tasks">
-            <IconFont type="icon-task" />
-            <span>Tasks</span>
-          </Link>
-        </MenuItem>
       </Menu>
     );
   }

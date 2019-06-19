@@ -1,0 +1,14 @@
+.task-detail {
+  .task-detail-container {
+    position: relative;
+
+    .go-back {
+      position: absolute;
+      right: 8px;
+
+      .go-back-icon {
+        margin-right: 4px;
+      }
+    }
+  }
+}

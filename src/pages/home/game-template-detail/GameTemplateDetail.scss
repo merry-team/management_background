@@ -1,0 +1,18 @@
+.game-template-detail {
+  .game-template-detail-container {
+    position: relative;
+
+    .go-back {
+      position: absolute;
+      right: 8px;
+
+      .go-back-icon {
+        margin-right: 4px;
+      }
+    }
+
+    .radio-container {
+      text-align: center;
+    }
+  }
+}

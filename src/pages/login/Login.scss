@@ -3,20 +3,18 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  position: relative;
 
   .login-form {
-    border: 1px solid red;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     padding: 20px;
     width: 400px;
 
     .login-button {
       width: 100%;
     }
-  }
-
-  .error-info {
-    color: red;
   }
 }

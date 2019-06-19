@@ -1,22 +1,38 @@
 import TaskApi from "../apis/TaskApi";
 import { Pager } from "../apis/interface/Base";
+import { observable, action } from "mobx";
+import TaskModel from "../models/TaskModel";
 
 export default class TaskStore {
   api: TaskApi;
-  pager: Pager | null = null;
-  taskList: any[] = [];
+  @observable pager: Pager | null = null;
+  @observable taskList: any[] = [];
+  @observable selectedTask: TaskModel | null = null;
 
   constructor(api: TaskApi) {
     this.api = api;
   }
 
-  async getTasks() {
-    const res = await this.api.getTasks();
+  @action.bound
+  async getTasks(gameTemplateId: number, page?: number, per?: number) {
+    const res = await this.api.getTasks(gameTemplateId, page, per);
     this.pager = res.pager;
     this.taskList = res.taskList;
   }
 
+  @action.bound
+  selectTask(task: TaskModel) {
+    this.selectedTask = task;
+  }
+
+  @action.bound
   async deleteTask(id: number) {
     await this.api.deleteTask(id);
+  }
+
+  @action.bound
+  async getTask(id: number) {
+    const res = await this.api.getTask(id);
+    this.selectedTask = res;
   }
 }

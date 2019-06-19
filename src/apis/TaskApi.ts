@@ -8,12 +8,17 @@ export default class TaskApi extends BaseApi {
   /**
    * 获取任务列表
    */
-  async getTasks(): Promise<{
+  async getTasks(
+    gameTemplateId: number,
+    page?: number,
+    per?: number
+  ): Promise<{
     pager: Pager;
     taskList: TaskModel[];
   }> {
     const res = await this.get<Base<Task[]>>({
-      url: "/api/v1/tasks"
+      url: "/api/v1/tasks",
+      params: { gameTemplateId, page, per }
     });
 
     const temp: {
@@ -31,12 +36,12 @@ export default class TaskApi extends BaseApi {
    * get某个任务
    * @param id
    */
-  async getTask(id: string) {
-    const res = await this.get<any>({
+  async getTask(id: number): Promise<TaskModel> {
+    const res = await this.get<Base<Task>>({
       url: `/api/v1/tasks/${id}`
     });
 
-    return res.resource;
+    return new TaskModel(res.resource!);
   }
 
   /**

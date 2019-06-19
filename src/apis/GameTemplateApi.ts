@@ -16,12 +16,16 @@ export default class GameTemplateApi extends BaseApi {
   /**
    * 获取游戏模板列表
    */
-  async getGameTemplates(): Promise<{
+  async getGameTemplates(
+    page?: number,
+    per?: number
+  ): Promise<{
     pager: Pager;
     gameTemplateList: GameTemplateModel[];
   }> {
     const res = await this.get<Base<GameTemplate[]>>({
-      url: "/api/v1/game_templates"
+      url: "/api/v1/game_templates",
+      params: { page, per }
     });
 
     return {

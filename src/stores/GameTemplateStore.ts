@@ -1,7 +1,6 @@
 import GameTemplateApi from "../apis/GameTemplateApi";
 import { Pager } from "../apis/interface/Base";
 import GameTemplateModel from "../models/GameTemplateModel";
-import { gameTemplateApi } from "../apis/index";
 import { action, observable } from "mobx";
 
 export default class GameTemplateStore {
@@ -15,10 +14,15 @@ export default class GameTemplateStore {
   }
 
   @action.bound
-  async getGameTemplates() {
-    const res = await this.api.getGameTemplates();
+  async getGameTemplates(page?: number, per?: number) {
+    const res = await this.api.getGameTemplates(page, per);
     this.pager = res.pager;
     this.gameTemplateList = res.gameTemplateList;
+  }
+
+  @action.bound
+  async selectGameTemplate(gameTemplate: GameTemplateModel) {
+    this.selectedGameTemplate = gameTemplate;
   }
 
   @action.bound
@@ -30,10 +34,5 @@ export default class GameTemplateStore {
   async getGameTemplate(id: number) {
     const res = await this.api.getGameTemplate(id);
     this.selectedGameTemplate = res;
-  }
-
-  @action.bound
-  async selectGameTemplate(gameTemplate: GameTemplateModel) {
-    this.selectedGameTemplate = gameTemplate;
   }
 }

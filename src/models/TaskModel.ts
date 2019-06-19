@@ -2,6 +2,7 @@ import Task from "../apis/interface/Task";
 import User from "apis/interface/User";
 
 export default class TaskModel {
+  id: number;
   challenge_score: number;
   creator: User;
   game_template_id: number;
@@ -10,6 +11,7 @@ export default class TaskModel {
   reward_score: number;
 
   constructor(task: Task) {
+    this.id = task.id;
     this.challenge_score = task.challenge_score;
     this.creator = task.creator;
     this.game_template_id = task.game_template_id;

@@ -33,7 +33,12 @@
 
     .user-profile {
       .user-avatar {
-        margin-right: 4px;
+        margin-right: 8px;
+      }
+
+      .logout {
+        margin-left: 8px;
+        cursor: pointer;
       }
     }
   }

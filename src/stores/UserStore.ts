@@ -2,7 +2,6 @@ import UserApi from "../apis/UserApi";
 import { action, observable } from "mobx";
 import UserModel from "../models/UserModel";
 import { RouterStore } from "mobx-react-router";
-import { routingStore } from "./index";
 
 export default class UserStore {
   api: UserApi;
@@ -26,5 +25,11 @@ export default class UserStore {
     this.loginUser = user;
     localStorage.setItem("userInfo", JSON.stringify(user));
     this.routingStore.push("/");
+  }
+
+  @action.bound
+  logout() {
+    this.api.logout();
+    this.routingStore.push("/login");
   }
 }

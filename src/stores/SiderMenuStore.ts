@@ -10,13 +10,10 @@ export default class SiderMenuStore {
   get currentRoute() {
     const path = this.routingStore.location.pathname;
     switch (path) {
-      case "/tasks":
-        return "tasks";
       case "/game_templates":
         return "game_templates";
       default:
         return "";
     }
-    return this.routingStore.location.pathname;
   }
 }
