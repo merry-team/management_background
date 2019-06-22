@@ -12,7 +12,7 @@ const User: React.FunctionComponent<UserProps> = props => {
   const userStore = props.userStore;
 
   useEffect(() => {
-    fetchUsers();
+    fetchUsers(); //展示用户
   }, []);
 
   async function fetchUsers() {
