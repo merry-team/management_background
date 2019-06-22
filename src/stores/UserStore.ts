@@ -31,9 +31,13 @@ export default class UserStore {
     this.routingStore.push("/");
   }
 
-  async getTasks() {
+  async getUsers() {
     const res = await this.api.getUsers();
     this.pager = res.pager;
     this.userList = res.userList;
+  }
+
+  async updateUserRole(id: string, role_name: "admin" | "guest") {
+    await this.api.modifyUserPermission(id, role_name);
   }
 }
