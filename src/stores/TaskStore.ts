@@ -26,6 +26,30 @@ export default class TaskStore {
   }
 
   @action.bound
+  async createTask(
+    gameTemplateId: number,
+    challengeScore: number,
+    rewardScore: number
+  ) {
+    await this.api.createTask(gameTemplateId, challengeScore, rewardScore);
+  }
+
+  @action.bound
+  async updateTask(
+    taskId: number,
+    gameTemplateId: number,
+    challengeScore: number,
+    rewardScore: number
+  ) {
+    await this.api.updateTask(
+      taskId,
+      gameTemplateId,
+      challengeScore,
+      rewardScore
+    );
+  }
+
+  @action.bound
   async deleteTask(id: number) {
     await this.api.deleteTask(id);
   }

@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import "./Task.scss";
 import { observer, inject } from "mobx-react";
-import { Table, Icon, Dropdown, Popconfirm, Menu } from "antd";
+import { Table, Icon, Dropdown, Popconfirm, Menu, Modal } from "antd";
 import TaskStore from "../../../stores/TaskStore";
 import { Link } from "react-router-dom";
 import TaskModel from "models/TaskModel";
+import TaskForm from "../TaskForm/TaskForm";
+import { TaskFieldValues } from "../TaskForm/TaskForm";
 
 const MenuItem = Menu.Item;
 
@@ -15,6 +17,10 @@ interface TaskProps {
 
 interface TaskState {
   loading: boolean;
+  modalVisible: boolean;
+  actionType?: "create" | "update";
+  updatingTaskId?: number;
+  initialValue?: TaskFieldValues;
 }
 
 @inject("taskStore")
@@ -23,7 +29,8 @@ export default class Task extends Component<TaskProps, TaskState> {
   constructor(props: TaskProps) {
     super(props);
     this.state = {
-      loading: false
+      loading: false,
+      modalVisible: false
     };
   }
 
@@ -52,10 +59,53 @@ export default class Task extends Component<TaskProps, TaskState> {
     taskStore.selectTask(task);
   };
 
+  createTask = async (values: TaskFieldValues) => {
+    const taskStore = this.props.taskStore!;
+    const gameTemplateId = this.props.gameTemplateId;
+    taskStore
+      .createTask(gameTemplateId, values.challenge_score!, values.reward_score!)
+      .then(async res => {
+        await this.getTasks();
+        this.setState({
+          modalVisible: false,
+          actionType: undefined
+        });
+      });
+  };
+
+  updateTask = async (values: TaskFieldValues) => {
+    const taskStore = this.props.taskStore!;
+    const gameTemplateId = this.props.gameTemplateId;
+    const { updatingTaskId } = this.state;
+
+    taskStore
+      .updateTask(
+        updatingTaskId!,
+        gameTemplateId,
+        values.challenge_score!,
+        values.reward_score!
+      )
+      .then(async res => {
+        await this.getTasks();
+        this.setState({
+          modalVisible: false,
+          actionType: undefined,
+          updatingTaskId: undefined,
+          initialValue: undefined
+        });
+      });
+  };
+
   deleteTask = async (id: number) => {
     const taskStore = this.props.taskStore!;
     taskStore.deleteTask(id).then(async res => {
       await this.getTasks();
+    });
+  };
+
+  closeModal = () => {
+    this.setState({
+      modalVisible: false
     });
   };
 
@@ -73,7 +123,13 @@ export default class Task extends Component<TaskProps, TaskState> {
   };
 
   render() {
-    const { loading } = this.state;
+    const {
+      loading,
+      modalVisible,
+      initialValue,
+      updatingTaskId,
+      actionType
+    } = this.state;
     const { taskList, pager } = this.props.taskStore!;
     const gameTemplateId = this.props.gameTemplateId;
 
@@ -87,6 +143,12 @@ export default class Task extends Component<TaskProps, TaskState> {
                   type="plus-circle"
                   theme="twoTone"
                   style={{ cursor: "pointer", fontSize: 20 }}
+                  onClick={() => {
+                    this.setState({
+                      modalVisible: true,
+                      actionType: "create"
+                    });
+                  }}
                 />
               ),
               dataIndex: "create",
@@ -127,7 +189,21 @@ export default class Task extends Component<TaskProps, TaskState> {
                         </Link>
                       </MenuItem>
                       <MenuItem>
-                        <span>Update</span>
+                        <span
+                          onClick={() => {
+                            this.setState({
+                              modalVisible: true,
+                              actionType: "update",
+                              updatingTaskId: record.id,
+                              initialValue: {
+                                challenge_score: record.challenge_score,
+                                reward_score: record.reward_score
+                              }
+                            });
+                          }}
+                        >
+                          Update
+                        </span>
                       </MenuItem>
                       <MenuItem>
                         <Popconfirm
@@ -159,6 +235,22 @@ export default class Task extends Component<TaskProps, TaskState> {
             onChange: this.onPageChange
           }}
         ></Table>
+        <Modal
+          title={
+            actionType === "create"
+              ? "Create Task"
+              : `Update Task: ${updatingTaskId}`
+          }
+          visible={modalVisible}
+          footer={null}
+          onCancel={this.closeModal}
+        >
+          <TaskForm
+            onSave={actionType === "create" ? this.createTask : this.updateTask}
+            onCancel={this.closeModal}
+            initialValues={initialValue}
+          />
+        </Modal>
       </div>
     );
   }

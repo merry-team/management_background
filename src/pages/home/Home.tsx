@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Layout, Icon, Avatar, Dropdown, Menu } from "antd";
+import { Layout, Icon, Avatar } from "antd";
 import { Route, Switch, Redirect } from "react-router-dom";
 import "./Home.scss";
 import GameTemplate from "./game-template/GameTemplate";
@@ -10,7 +10,6 @@ import UserStore from "../../stores/UserStore";
 import SiderMenu from "./sider-menu/SiderMenu";
 
 const { Header, Content, Footer, Sider } = Layout;
-const MenuItem = Menu.Item;
 
 interface HomeProps {
   userStore?: UserStore;

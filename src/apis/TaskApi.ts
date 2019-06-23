@@ -48,11 +48,11 @@ export default class TaskApi extends BaseApi {
    * 创建任务
    */
   async createTask(
-    game_template_id: string,
+    game_template_id: number,
     challenge_score: number,
-    reward_score: string
+    reward_score: number
   ) {
-    const res = await this.post<any>({
+    await this.post({
       url: "/api/v1/tasks",
       data: { game_template_id, challenge_score, reward_score }
     });
@@ -62,12 +62,12 @@ export default class TaskApi extends BaseApi {
    * 更新任务
    */
   async updateTask(
-    task_id: string,
-    game_template_id: string,
+    task_id: number,
+    game_template_id: number,
     challenge_score: number,
-    reward_score: string
+    reward_score: number
   ) {
-    const res = await this.post<any>({
+    await this.patch({
       url: `/api/v1/tasks/${task_id}`,
       data: { game_template_id, challenge_score, reward_score }
     });
