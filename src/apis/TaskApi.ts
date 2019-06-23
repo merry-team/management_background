@@ -77,7 +77,7 @@ export default class TaskApi extends BaseApi {
    * 删除任务
    */
   async deleteTask(id: number) {
-    const res = await this.delete({
+    await this.delete({
       url: `/api/v1/tasks/${id}`
     });
   }

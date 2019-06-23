@@ -1,21 +1,21 @@
 import React, { Component } from "react";
-import "./Task.scss";
+import "./TaskList.scss";
 import { observer, inject } from "mobx-react";
 import { Table, Icon, Dropdown, Popconfirm, Menu, Modal } from "antd";
-import TaskStore from "../../../stores/TaskStore";
+import TaskStore from "../../../../stores/TaskStore";
 import { Link } from "react-router-dom";
 import TaskModel from "models/TaskModel";
-import TaskForm from "../TaskForm/TaskForm";
-import { TaskFieldValues } from "../TaskForm/TaskForm";
+import TaskForm from "../task-form/TaskForm";
+import { TaskFieldValues } from "../task-form/TaskForm";
 
 const MenuItem = Menu.Item;
 
-interface TaskProps {
+interface TaskListProps {
   taskStore?: TaskStore;
   gameTemplateId: number;
 }
 
-interface TaskState {
+interface TaskListState {
   loading: boolean;
   modalVisible: boolean;
   actionType?: "create" | "update";
@@ -25,8 +25,8 @@ interface TaskState {
 
 @inject("taskStore")
 @observer
-export default class Task extends Component<TaskProps, TaskState> {
-  constructor(props: TaskProps) {
+export default class TaskList extends Component<TaskListProps, TaskListState> {
+  constructor(props: TaskListProps) {
     super(props);
     this.state = {
       loading: false,

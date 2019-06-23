@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { Layout, Icon, Avatar } from "antd";
 import { Route, Switch, Redirect } from "react-router-dom";
 import "./Home.scss";
-import GameTemplate from "./game-template/GameTemplate";
-import GameTemplateDetail from "./game-template-detail/GameTemplateDetail";
-import TaskDetail from "./task-detail/TaskDetail";
+import GameTemplateList from "./game-template/game-template-list/GameTemplateList";
+import GameTemplateDetail from "./game-template/game-template-detail/GameTemplateDetail";
+import TaskDetail from "./task/task-detail/TaskDetail";
 import { inject, observer } from "mobx-react";
 import UserStore from "../../stores/UserStore";
 import SiderMenu from "./sider-menu/SiderMenu";
@@ -81,7 +81,7 @@ export default class Home extends Component<HomeProps, HomeState> {
               <Route
                 exact={true}
                 path="/game_templates"
-                component={GameTemplate}
+                component={GameTemplateList}
               />
               <Route
                 exact={true}

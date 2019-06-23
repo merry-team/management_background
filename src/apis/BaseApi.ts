@@ -76,7 +76,13 @@ export default class BaseApi {
 
       return result.data;
     } catch (error) {
-      notice("error", error.errors ? error.errors : error.message);
+      error.errors
+        ? typeof error.errors === "string"
+          ? notice("error", error.errors)
+          : Object.keys(error.errors).forEach(key => {
+              notice("error", `${key} ${error.errors[key][0]}`);
+            })
+        : notice("error", error.message);
       throw error;
     }
   }

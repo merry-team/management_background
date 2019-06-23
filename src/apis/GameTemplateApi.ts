@@ -57,10 +57,10 @@ export default class GameTemplateApi extends BaseApi {
     duration: number,
     challenge_score: number,
     challenge_count: number,
-    quarter_started_at: string,
-    quarter_ended_at: string
+    quarter_started_at?: string,
+    quarter_ended_at?: string
   ) {
-    const res = await this.post({
+    await this.post({
       url: "/api/v1/game_templates",
       data: {
         description,
@@ -78,16 +78,16 @@ export default class GameTemplateApi extends BaseApi {
    * 更新游戏模板
    */
   async updateGameTemplate(
-    game_template_id: string,
+    game_template_id: number,
     description: string,
     category: "challenge" | "arena" | "quarter",
     duration: number,
     challenge_score: number,
     challenge_count: number,
-    quarter_started_at: string,
-    quarter_ended_at: string
+    quarter_started_at?: string,
+    quarter_ended_at?: string
   ) {
-    const res = await this.patch({
+    await this.patch({
       url: `/api/v1/game_templates/${game_template_id}`,
       data: {
         description,

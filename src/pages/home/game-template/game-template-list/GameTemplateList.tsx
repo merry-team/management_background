@@ -1,31 +1,40 @@
 import React, { Component } from "react";
-import "./GameTemplate.scss";
+import "./GameTemplateList.scss";
 import { observer, inject } from "mobx-react";
 import GameTemplateStore from "stores/GameTemplateStore";
-import { Table, Dropdown, Icon, Menu, Popconfirm } from "antd";
-import GameTemplateModel from "../../../models/GameTemplateModel";
+import { Table, Dropdown, Icon, Menu, Popconfirm, Modal } from "antd";
+import GameTemplateModel from "../../../../models/GameTemplateModel";
 import { Link } from "react-router-dom";
+import { GameTemplateFieldValues } from "../game-template-form/GameTemplateForm";
+import GameTemplateForm from "../game-template-form/GameTemplateForm";
+import moment from "moment";
+import { dateFormat } from "../../../../constants/index";
 
 const MenuItem = Menu.Item;
 
-interface GameTemplateProps {
+interface GameTemplateListProps {
   gameTemplateStore?: GameTemplateStore;
 }
 
-interface GameTemplateState {
+interface GameTemplateListState {
   loading: boolean;
+  modalVisible: boolean;
+  actionType?: "create" | "update";
+  updatingGameTemplateId?: number;
+  initialValue?: GameTemplateFieldValues;
 }
 
 @inject("gameTemplateStore")
 @observer
-export default class GameTemplate extends Component<
-  GameTemplateProps,
-  GameTemplateState
+export default class GameTemplateList extends Component<
+  GameTemplateListProps,
+  GameTemplateListState
 > {
-  constructor(props: GameTemplateProps) {
+  constructor(props: GameTemplateListProps) {
     super(props);
     this.state = {
-      loading: false
+      loading: false,
+      modalVisible: false
     };
   }
 
@@ -50,10 +59,74 @@ export default class GameTemplate extends Component<
     gameTemplateStore.selectGameTemplate(gameTemplate);
   };
 
+  createGameTemplate = async (values: GameTemplateFieldValues) => {
+    const gameTemplateStore = this.props.gameTemplateStore!;
+    gameTemplateStore
+      .createGameTemplate(
+        values.game_rule!,
+        values.category!,
+        values.duration!,
+        values.challenge_score!,
+        values.challenge_count!,
+        values.quarter_started_ended_at &&
+          values.quarter_started_ended_at.length !== 0
+          ? values.quarter_started_ended_at[0].format(dateFormat)
+          : undefined,
+        values.quarter_started_ended_at &&
+          values.quarter_started_ended_at.length !== 0
+          ? values.quarter_started_ended_at[1].format(dateFormat)
+          : undefined
+      )
+      .then(async res => {
+        await gameTemplateStore.getGameTemplates();
+        this.setState({
+          modalVisible: false,
+          actionType: undefined
+        });
+      });
+  };
+
+  updateGameTemplate = async (values: GameTemplateFieldValues) => {
+    const gameTemplateStore = this.props.gameTemplateStore!;
+    const { updatingGameTemplateId } = this.state;
+    gameTemplateStore
+      .updateGameTemplate(
+        updatingGameTemplateId!,
+        values.game_rule!,
+        values.category!,
+        values.duration!,
+        values.challenge_score!,
+        values.challenge_count!,
+        values.quarter_started_ended_at &&
+          values.quarter_started_ended_at.length !== 0
+          ? values.quarter_started_ended_at[0].format(dateFormat)
+          : undefined,
+        values.quarter_started_ended_at &&
+          values.quarter_started_ended_at.length !== 0
+          ? values.quarter_started_ended_at[1].format(dateFormat)
+          : undefined
+      )
+      .then(async res => {
+        await gameTemplateStore.getGameTemplates();
+        this.setState({
+          modalVisible: false,
+          actionType: undefined,
+          updatingGameTemplateId: undefined,
+          initialValue: undefined
+        });
+      });
+  };
+
   deleteGameTemplate = async (id: number) => {
     const gameTemplateStore = this.props.gameTemplateStore!;
     gameTemplateStore.deleteGameTemplate(id).then(async res => {
       await this.getGameTemplates();
+    });
+  };
+
+  closeModal = () => {
+    this.setState({
+      modalVisible: false
     });
   };
 
@@ -70,7 +143,13 @@ export default class GameTemplate extends Component<
   };
 
   render() {
-    const { loading } = this.state;
+    const {
+      loading,
+      modalVisible,
+      initialValue,
+      updatingGameTemplateId,
+      actionType
+    } = this.state;
     const { gameTemplateList, pager } = this.props.gameTemplateStore!;
 
     return (
@@ -83,6 +162,12 @@ export default class GameTemplate extends Component<
                   type="plus-circle"
                   theme="twoTone"
                   style={{ cursor: "pointer", fontSize: 20 }}
+                  onClick={() => {
+                    this.setState({
+                      modalVisible: true,
+                      actionType: "create"
+                    });
+                  }}
                 />
               ),
               dataIndex: "create",
@@ -156,7 +241,28 @@ export default class GameTemplate extends Component<
                         </Link>
                       </MenuItem>
                       <MenuItem>
-                        <span>Update</span>
+                        <span
+                          onClick={() => {
+                            this.setState({
+                              modalVisible: true,
+                              actionType: "update",
+                              updatingGameTemplateId: record.id,
+                              initialValue: {
+                                category: record.category,
+                                game_rule: record.description,
+                                duration: record.duration,
+                                challenge_count: record.challenge_count,
+                                challenge_score: record.challenge_score,
+                                quarter_started_ended_at: [
+                                  moment(record.quarter_started_at),
+                                  moment(record.quarter_ended_at)
+                                ]
+                              }
+                            });
+                          }}
+                        >
+                          Update
+                        </span>
                       </MenuItem>
                       <MenuItem>
                         <Popconfirm
@@ -188,6 +294,26 @@ export default class GameTemplate extends Component<
             onChange: this.onPageChange
           }}
         ></Table>
+        <Modal
+          title={
+            actionType === "create"
+              ? "Create GameTemplate"
+              : `Update GameTemplate: ${updatingGameTemplateId}`
+          }
+          visible={modalVisible}
+          footer={null}
+          onCancel={this.closeModal}
+        >
+          <GameTemplateForm
+            onSave={
+              actionType === "create"
+                ? this.createGameTemplate
+                : this.updateGameTemplate
+            }
+            onCancel={this.closeModal}
+            initialValues={initialValue}
+          />
+        </Modal>
       </div>
     );
   }

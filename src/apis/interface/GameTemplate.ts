@@ -1,5 +1,6 @@
 import { BaseEntity } from "./Base";
 import User from "./User";
+import { Moment } from "moment";
 
 export type GameTemplateCategory = "challenge" | "arena" | "quarter";
 

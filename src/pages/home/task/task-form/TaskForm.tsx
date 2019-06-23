@@ -6,7 +6,7 @@ import "./TaskForm.scss";
 const FormItem = Form.Item;
 
 const formItemLayout = {
-  labelCol: { span: 12 },
+  labelCol: { span: 8 },
   wrapperCol: { span: 12 }
 };
 
@@ -58,12 +58,12 @@ class _TaskForm extends Component<TaskFormProps> {
         <FormItem {...formItemLayout} label="挑战分数">
           {getFieldDecorator("challenge_score", {
             rules: [{ required: true, message: "请填写挑战分数" }]
-          })(<InputNumber />)}
+          })(<InputNumber style={{ width: "100%" }} min={1} />)}
         </FormItem>
         <FormItem {...formItemLayout} label="奖励分数">
           {getFieldDecorator("reward_score", {
             rules: [{ required: true, message: "请填写奖励分数" }]
-          })(<InputNumber />)}
+          })(<InputNumber style={{ width: "100%" }} min={1} />)}
         </FormItem>
         <Divider />
         <FormItem>

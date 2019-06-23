@@ -4,7 +4,7 @@ import { observer, inject } from "mobx-react";
 import GameTemplateStore from "stores/GameTemplateStore";
 import { RouteComponentProps } from "react-router";
 import { Spin, Radio, Icon } from "antd";
-import Task from "../task/Task";
+import TaskList from "../../task/task-list/TaskList";
 
 const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
@@ -88,7 +88,7 @@ export default class GameTemplateDetail extends Component<
             </div>
             <div className="content-container">
               {selectedTab === "tasks" ? (
-                <Task gameTemplateId={selectedGameTemplate.id} />
+                <TaskList gameTemplateId={selectedGameTemplate.id} />
               ) : (
                 <div>{selectedGameTemplate.id}</div>
               )}

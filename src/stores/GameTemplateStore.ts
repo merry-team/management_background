@@ -26,6 +26,50 @@ export default class GameTemplateStore {
   }
 
   @action.bound
+  async createGameTemplate(
+    description: string,
+    category: "challenge" | "arena" | "quarter",
+    duration: number,
+    challenge_score: number,
+    challenge_count: number,
+    quarter_started_at?: string,
+    quarter_ended_at?: string
+  ) {
+    await this.api.createGameTemplate(
+      description,
+      category,
+      duration,
+      challenge_score,
+      challenge_count,
+      quarter_started_at,
+      quarter_ended_at
+    );
+  }
+
+  @action.bound
+  async updateGameTemplate(
+    game_template_id: number,
+    description: string,
+    category: "challenge" | "arena" | "quarter",
+    duration: number,
+    challenge_score: number,
+    challenge_count: number,
+    quarter_started_at?: string,
+    quarter_ended_at?: string
+  ) {
+    await this.api.updateGameTemplate(
+      game_template_id,
+      description,
+      category,
+      duration,
+      challenge_score,
+      challenge_count,
+      quarter_started_at,
+      quarter_ended_at
+    );
+  }
+
+  @action.bound
   async deleteGameTemplate(id: number) {
     await this.api.deleteGameTemplate(id);
   }
