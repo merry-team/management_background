@@ -26,11 +26,13 @@ export default class GameTemplateModel {
     this.creator = gameTemplate.creator;
     this.duration = gameTemplate.duration;
     this.description = gameTemplate.description;
-    this.quarter_ended_at = moment(gameTemplate.quarter_ended_at).format(
-      dateFormat
-    );
-    this.quarter_started_at = moment(gameTemplate.quarter_started_at).format(
-      dateFormat
-    );
+    this.quarter_ended_at =
+      gameTemplate.quarter_ended_at != null
+        ? moment(gameTemplate.quarter_ended_at).format(dateFormat)
+        : "";
+    this.quarter_started_at =
+      gameTemplate.quarter_started_at != null
+        ? moment(gameTemplate.quarter_started_at).format(dateFormat)
+        : "";
   }
 }

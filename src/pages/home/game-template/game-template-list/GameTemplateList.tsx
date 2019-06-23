@@ -253,10 +253,14 @@ export default class GameTemplateList extends Component<
                                 duration: record.duration,
                                 challenge_count: record.challenge_count,
                                 challenge_score: record.challenge_score,
-                                quarter_started_ended_at: [
-                                  moment(record.quarter_started_at),
-                                  moment(record.quarter_ended_at)
-                                ]
+                                quarter_started_ended_at:
+                                  // 只要有一个值为''，则说明该项不需要提供起止时间
+                                  record.quarter_started_at !== ""
+                                    ? [
+                                        moment(record.quarter_started_at),
+                                        moment(record.quarter_ended_at)
+                                      ]
+                                    : null
                               }
                             });
                           }}
