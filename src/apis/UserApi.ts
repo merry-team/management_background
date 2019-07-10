@@ -76,7 +76,6 @@ export default class UserApi extends BaseApi {
       userList: res.resources!.map((resource: User) => new UserModel(resource))
     };
   }
-
   private removeAgentAuthorization() {
     delete merryAgent.defaults.headers.common["Authorization"];
   }
