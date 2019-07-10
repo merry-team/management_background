@@ -2,7 +2,7 @@ import BaseApi from "./BaseApi";
 import merryAgent from "./agent";
 import User from "./interface/User";
 import UserModel from "../models/UserModel";
-import Base from "./interface/Base";
+import Base, { Pager } from "./interface/Base";
 import { Role } from "./interface/User";
 
 export default class UserApi extends BaseApi {
@@ -53,6 +53,27 @@ export default class UserApi extends BaseApi {
           resource_type: "ggg"
         }
       ] as Role[]
+    };
+  }
+
+  /**
+   * 获取用户列表
+   */
+  async getUserList(
+    page?: number,
+    per?: number
+  ): Promise<{
+    pager: Pager;
+    userList: UserModel[];
+  }> {
+    const res = await this.get<Base<User[]>>({
+      url: "/api/v1/users",
+      params: { page, per }
+    });
+
+    return {
+      pager: res.pager!,
+      userList: res.resources!.map((resource: User) => new UserModel(resource))
     };
   }
 

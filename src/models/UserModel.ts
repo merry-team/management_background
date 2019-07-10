@@ -6,11 +6,13 @@ export default class UserModel {
   name: string;
   avatar: string;
   roles: RoleType[];
+  created_at: string;
 
   constructor(user: User) {
     this.account = user.account;
     this.name = user.name;
     this.avatar = user.avatar;
+    this.created_at = user.created_at;
     this.roles = user.roles.map(r => r.name);
   }
 
