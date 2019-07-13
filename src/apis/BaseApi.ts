@@ -76,13 +76,16 @@ export default class BaseApi {
 
       return result.data;
     } catch (error) {
-      error.errors
-        ? typeof error.errors === "string"
-          ? notice("error", error.errors)
-          : Object.keys(error.errors).forEach(key => {
-              notice("error", `${key} ${error.errors[key][0]}`);
+      if (error.status === 401) {
+        window.location.pathname = "/login";
+      }
+      error.data && error.data.errors
+        ? typeof error.data.errors === "string"
+          ? notice("error", error.data.errors)
+          : Object.keys(error.data.errors).forEach(key => {
+              notice("error", `${key} ${error.data.errors[key][0]}`);
             })
-        : notice("error", error.message);
+        : notice("error", error.data.message);
       throw error;
     }
   }
