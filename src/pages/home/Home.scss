@@ -6,23 +6,23 @@
     .logo {
       display: inline-block;
       overflow: hidden;
-      height: 64px;
-      line-height: 64px;
+      height: 5.33rem;
+      line-height: 5.33rem;
       text-align: center;
       color: #fff;
     }
   }
 
   .header {
-    padding: 0 16px;
+    padding: 0 1.33rem;
     background: #fff;
     display: flex;
     justify-content: space-between;
     align-items: center;
 
     .trigger {
-      font-size: 18px;
-      line-height: 64px;
+      font-size: 1.5rem;
+      line-height: 5.33rem;
       cursor: pointer;
       transition: color 0.3s;
 
@@ -33,20 +33,20 @@
 
     .user-profile {
       .user-avatar {
-        margin-right: 8px;
+        margin-right: 0.66rem;
       }
 
       .logout {
-        margin-left: 8px;
+        margin-left: 0.66rem;
         cursor: pointer;
       }
     }
   }
 
   .content {
-    margin: 24px 16px;
-    min-height: 280px;
-    padding: 24px;
+    margin: 2rem 1.33rem;
+    min-height: 23.33rem;
+    padding: 2rem;
     background: #f9fafb;
     overflow-x: auto;
     display: flex;

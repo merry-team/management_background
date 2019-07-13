@@ -81,7 +81,7 @@ export default class Home extends Component<HomeProps, HomeState> {
               <Route
                 path="/"
                 exact={true}
-                render={() => <Redirect to="/game_templates" />}
+                render={() => <Redirect to="/users" />}
               />
               <Route
                 exact={true}
