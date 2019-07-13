@@ -1,9 +1,12 @@
-import React, { Component } from "react";
-import { Menu, Icon } from "antd";
 import "./SiderMenu.scss";
+
+import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import SiderMenuStore from "../../../stores/SiderMenuStore";
+
+import { IconFont } from "../../../constants";
 import { Link } from "react-router-dom";
+import { Menu } from "antd";
+import SiderMenuStore from "../../../stores/SiderMenuStore";
 
 const MenuItem = Menu.Item;
 
@@ -11,10 +14,6 @@ interface SiderMenuProps {
   siderMenuStore?: SiderMenuStore;
   inlineCollapsed: boolean;
 }
-
-const IconFont = Icon.createFromIconfontCN({
-  scriptUrl: "//at.alicdn.com/t/font_1244296_vgb6nuix54c.js"
-});
 
 @inject("siderMenuStore")
 @observer
