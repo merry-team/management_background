@@ -31,13 +31,13 @@ export default class SiderMenu extends Component<SiderMenuProps> {
       >
         <MenuItem className="sider-menu-item" key="users">
           <Link to="/users">
-            <IconFont type="icon-game" />
+            <IconFont type="icon-user" className="icon" />
             <span>Users</span>
           </Link>
         </MenuItem>
         <MenuItem className="sider-menu-item" key="game_templates">
           <Link to="/game_templates">
-            <IconFont type="icon-game" />
+            <IconFont type="icon-game" className="icon" />
             <span>Game Templates</span>
           </Link>
         </MenuItem>

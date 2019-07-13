@@ -13,6 +13,7 @@ function User() {
   const [per] = useState(10);
 
   const columns = [
+    { title: "ID", dataIndex: "id", key: "id" },
     {
       title: (
         <Icon
@@ -48,7 +49,9 @@ function User() {
       dataIndex: "roles",
       key: "roles",
       render: (text: string, item: UserModel) =>
-        item.roles.map((item: RoleType) => <span>{item}</span>)
+        item.roles.map((item: RoleType, index: number) => (
+          <span key={index}>{item}</span>
+        ))
     },
     {
       title: "操作",
@@ -78,7 +81,7 @@ function User() {
         bordered
         columns={columns}
         dataSource={userStore.users}
-        rowKey={"id"}
+        rowKey={record => record.id.toString()}
       />
     </div>
   );

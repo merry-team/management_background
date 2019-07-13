@@ -7,6 +7,7 @@ export default class UserModel {
   avatar: string;
   roles: RoleType[];
   created_at: string;
+  id: number;
 
   constructor(user: User) {
     this.account = user.account;
@@ -14,6 +15,7 @@ export default class UserModel {
     this.avatar = user.avatar;
     this.created_at = user.created_at;
     this.roles = user.roles.map(r => r.name);
+    this.id = user.id;
   }
 
   get isAdmin() {

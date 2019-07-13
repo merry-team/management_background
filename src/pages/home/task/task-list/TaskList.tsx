@@ -234,7 +234,7 @@ export default class TaskList extends Component<TaskListProps, TaskListState> {
             total: pager ? pager.total_count : 0,
             onChange: this.onPageChange
           }}
-        ></Table>
+        />
         <Modal
           title={
             actionType === "create"

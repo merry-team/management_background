@@ -61,6 +61,8 @@ class Login extends Component<LoginProps, LoginState> {
               rules: [{ required: true, message: "请输入用户名" }]
             })(
               <Input
+                className="input"
+                size="large"
                 prefix={
                   <Icon type="user" style={{ color: "rgba(0, 0, 0, .25)" }} />
                 }
@@ -73,6 +75,8 @@ class Login extends Component<LoginProps, LoginState> {
               rules: [{ required: true, message: "请输入密码" }]
             })(
               <Input
+                className="input"
+                size="large"
                 prefix={
                   <Icon type="lock" style={{ color: "rgba(0, 0, 0, .25)" }} />
                 }
@@ -83,6 +87,7 @@ class Login extends Component<LoginProps, LoginState> {
           </FormItem>
           <FormItem>
             <Button
+              size="large"
               className="login-button"
               type="primary"
               loading={loading}
