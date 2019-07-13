@@ -297,7 +297,7 @@ export default class GameTemplateList extends Component<
             total: pager ? pager.total_count : 0,
             onChange: this.onPageChange
           }}
-        ></Table>
+        />
         <Modal
           title={
             actionType === "create"

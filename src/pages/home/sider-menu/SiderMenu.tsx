@@ -29,6 +29,12 @@ export default class SiderMenu extends Component<SiderMenuProps> {
         mode="inline"
         selectedKeys={[currentRoute]}
       >
+        <MenuItem className="sider-menu-item" key="users">
+          <Link to="/users">
+            <IconFont type="icon-game" />
+            <span>Users</span>
+          </Link>
+        </MenuItem>
         <MenuItem className="sider-menu-item" key="game_templates">
           <Link to="/game_templates">
             <IconFont type="icon-game" />

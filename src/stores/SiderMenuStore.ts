@@ -12,6 +12,8 @@ export default class SiderMenuStore {
     switch (path) {
       case "/game_templates":
         return "game_templates";
+      case "/users":
+        return "users";
       default:
         return "";
     }

@@ -8,6 +8,7 @@ import TaskDetail from "./task/task-detail/TaskDetail";
 import { inject, observer } from "mobx-react";
 import UserStore from "../../stores/UserStore";
 import SiderMenu from "./sider-menu/SiderMenu";
+import User from "./user/User";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -66,7 +67,11 @@ export default class Home extends Component<HomeProps, HomeState> {
               onClick={this.toggle}
             />
             <div className="user-profile">
-              <Avatar className="user-avatar" icon="user" />
+              <Avatar
+                className="user-avatar"
+                icon="user"
+                src={loginUser.avatar}
+              />
               {loginUser.name}
               <Icon className="logout" type="logout" onClick={this.logout} />
             </div>
@@ -94,6 +99,7 @@ export default class Home extends Component<HomeProps, HomeState> {
                 component={TaskDetail}
               />
               {/* <Route render={() => <div>404</div>} /> */}
+              <Route path="/users" component={User} />
             </Switch>
           </Content>
           <Footer />

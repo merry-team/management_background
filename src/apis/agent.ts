@@ -15,7 +15,7 @@ merryAgent.interceptors.response.use(
     return req;
   },
   error => {
-    return Promise.reject(error.response.data);
+    return Promise.reject(error.response);
   }
 );
 

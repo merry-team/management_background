@@ -13,4 +13,5 @@ export default interface User extends BaseEntity {
   avatar: string;
   name: string;
   roles: Role[];
+  created_at: string;
 }
