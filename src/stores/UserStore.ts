@@ -37,6 +37,11 @@ export default class UserStore {
   }
 
   @action.bound
+  async modifyUserPermission(id: string, role_name: "admin" | "guest") {
+    this.api.modifyUserPermission(id, role_name);
+  }
+
+  @action.bound
   logout() {
     this.api.logout();
     this.routingStore.push("/login");

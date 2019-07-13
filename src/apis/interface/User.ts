@@ -1,6 +1,7 @@
 import { BaseEntity } from "./Base";
 
 export type RoleType = "admin" | "guest";
+export const roleMaps: RoleType[] = ["admin", "guest"];
 
 export interface Role extends BaseEntity {
   name: RoleType;

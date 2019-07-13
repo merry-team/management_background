@@ -1,8 +1,12 @@
 import axios from "axios";
 import { AxiosResponse } from "axios";
 
+const staginUrl = "https://staging.bestluci.com";
+const productionUrl = "https://www.bestluci.com";
+const test = "http://localhost:3000";
+
 const merryAgent = axios.create({
-  baseURL: "https://staging.bestluci.com"
+  baseURL: test
 });
 
 merryAgent.interceptors.response.use(
