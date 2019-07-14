@@ -1,6 +1,6 @@
 import BaseApi from "./BaseApi";
 import merryAgent from "./agent";
-import User from "./interface/User";
+import User, { RoleType } from "./interface/User";
 import UserModel from "../models/UserModel";
 import Base, { Pager } from "./interface/Base";
 import { Role } from "./interface/User";
@@ -58,17 +58,25 @@ export default class UserApi extends BaseApi {
 
   /**
    * 获取用户列表
+   * page 第几页
+   * per 一页多少条
+   * roleName 过滤role用户
+   * keyword 关健字
    */
   async getUserList(
     page?: number,
-    per?: number
+    per?: number,
+    role_name?: RoleType,
+    keyword?: string
   ): Promise<{
     pager: Pager;
     userList: UserModel[];
+    role_name?: RoleType;
+    keyword?: string;
   }> {
     const res = await this.get<Base<User[]>>({
       url: "/api/v1/users",
-      params: { page, per }
+      params: { page, per, role_name, keyword }
     });
 
     return {

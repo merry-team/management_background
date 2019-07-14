@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { observer, inject } from "mobx-react";
-import { Table, Avatar, Select, Modal } from "antd";
+import { Table, Avatar, Select, Modal, Input } from "antd";
 import "./User.scss";
 import UserModel from "../../../models/UserModel";
 import { userStore } from "../../../stores";
@@ -10,13 +10,29 @@ import { RoleType, roleMaps } from "../../../apis/interface/User";
 
 const { Option } = Select;
 const { confirm } = Modal;
+const { Search } = Input;
 
 function User() {
-  const [currentPage, setCurrentPage] = useState(1);
   const [per] = useState(10);
+  const { pager } = userStore;
+  const [roleValue, setRoleValue] = useState<RoleType | "全部">("全部");
 
-  const fetchUsers = () => {
-    userStore.getUserList(currentPage, per);
+  const fetchUsers = (
+    page: number,
+    roleName?: RoleType | "全部",
+    keyword?: string
+  ) => {
+    if (roleName === "全部" && keyword) {
+      //return userStore.getUserList(page,per, void, keyword)
+    }
+    if (roleName !== "全部" && keyword) {
+      return userStore.getUserList(page, per, roleName, keyword);
+    }
+    if (roleName === "全部") {
+      return userStore.getUserList(page, per);
+    } else {
+      return userStore.getUserList(page, per, roleName);
+    }
   };
 
   const updateRole = (id: string, role: RoleType) => {
@@ -25,7 +41,7 @@ function User() {
       content: "这操作请谨慎！！",
       async onOk() {
         await userStore.modifyUserPermission(id, role);
-        setTimeout(fetchUsers, 200);
+        setTimeout(() => fetchUsers(pager ? pager.current_page : 1), 200);
       }
     });
   };
@@ -72,16 +88,49 @@ function User() {
   ];
 
   useEffect(() => {
-    fetchUsers();
+    fetchUsers(1);
   }, []);
+
+  const filterRoleUsers = (value: RoleType | "全部") => {
+    setRoleValue(value);
+    value === "全部"
+      ? fetchUsers(pager ? pager.current_page : 1)
+      : fetchUsers(1, value);
+  };
 
   return (
     <div className="user">
+      <div className="actions-wrap">
+        <Select
+          style={{ width: 120 }}
+          value={roleValue}
+          onChange={(v: RoleType | "全部") => filterRoleUsers(v)}
+        >
+          <Option value={"全部"}>全部</Option>
+          {roleMaps.map((role, index) => (
+            <Option value={role} key={index}>
+              {role}
+            </Option>
+          ))}
+        </Select>
+        <Search
+          placeholder="搜索名字"
+          enterButton="Search"
+          onSearch={(value: string) => fetchUsers(1, roleValue, value)}
+          style={{ width: 300 }}
+        />
+      </div>
       <Table
         bordered
         columns={columns}
         dataSource={userStore.users}
         rowKey={record => record.id.toString()}
+        pagination={{
+          current: pager ? pager.current_page : 1,
+          pageSize: per,
+          total: pager ? pager.total_count : 0,
+          onChange: (page: number) => fetchUsers(page, roleValue)
+        }}
       />
     </div>
   );

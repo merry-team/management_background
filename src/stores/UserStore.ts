@@ -3,6 +3,7 @@ import { action, observable } from "mobx";
 import UserModel from "../models/UserModel";
 import { RouterStore } from "mobx-react-router";
 import { Pager } from "../apis/interface/Base";
+import { RoleType } from "../apis/interface/User";
 
 export default class UserStore {
   api: UserApi;
@@ -30,8 +31,13 @@ export default class UserStore {
   }
 
   @action.bound
-  async getUserList(page?: number, per?: number) {
-    const res = await this.api.getUserList(page, per);
+  async getUserList(
+    page?: number,
+    per?: number,
+    roleName?: RoleType,
+    keyword?: string
+  ) {
+    const res = await this.api.getUserList(page, per, roleName, keyword);
     this.pager = res.pager;
     this.users = res.userList;
   }
