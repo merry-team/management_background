@@ -20,19 +20,14 @@ function User() {
   const fetchUsers = (
     page: number,
     roleName?: RoleType | "全部",
-    keyword?: string
+    keyword?: string | undefined
   ) => {
-    if (roleName === "全部" && keyword) {
-      //return userStore.getUserList(page,per, void, keyword)
-    }
-    if (roleName !== "全部" && keyword) {
-      return userStore.getUserList(page, per, roleName, keyword);
-    }
-    if (roleName === "全部") {
-      return userStore.getUserList(page, per);
-    } else {
-      return userStore.getUserList(page, per, roleName);
-    }
+    userStore.getUserList(
+      page,
+      per,
+      roleName === "全部" ? undefined : roleName,
+      keyword ? keyword : undefined
+    );
   };
 
   const updateRole = (id: string, role: RoleType) => {
@@ -41,7 +36,10 @@ function User() {
       content: "这操作请谨慎！！",
       async onOk() {
         await userStore.modifyUserPermission(id, role);
-        setTimeout(() => fetchUsers(pager ? pager.current_page : 1), 200);
+        setTimeout(
+          () => fetchUsers(pager ? pager.current_page : 1, roleValue),
+          200
+        );
       }
     });
   };
@@ -101,24 +99,30 @@ function User() {
   return (
     <div className="user">
       <div className="actions-wrap">
-        <Select
-          style={{ width: 120 }}
-          value={roleValue}
-          onChange={(v: RoleType | "全部") => filterRoleUsers(v)}
-        >
-          <Option value={"全部"}>全部</Option>
-          {roleMaps.map((role, index) => (
-            <Option value={role} key={index}>
-              {role}
-            </Option>
-          ))}
-        </Select>
-        <Search
-          placeholder="搜索名字"
-          enterButton="Search"
-          onSearch={(value: string) => fetchUsers(1, roleValue, value)}
-          style={{ width: 300 }}
-        />
+        <div className="action">
+          <Select
+            style={{ width: 120 }}
+            value={roleValue}
+            onChange={(v: RoleType | "全部") => filterRoleUsers(v)}
+          >
+            <Option value={"全部"}>全部</Option>
+            {roleMaps.map((role, index) => (
+              <Option value={role} key={index}>
+                {role}
+              </Option>
+            ))}
+          </Select>
+        </div>
+        <div className="action">
+          <Search
+            placeholder="搜索名字"
+            enterButton="Search"
+            onSearch={(value: string) =>
+              value && fetchUsers(1, roleValue, value)
+            }
+            style={{ width: 300 }}
+          />
+        </div>
       </div>
       <Table
         bordered

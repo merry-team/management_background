@@ -66,13 +66,13 @@ export default class UserApi extends BaseApi {
   async getUserList(
     page?: number,
     per?: number,
-    role_name?: RoleType,
-    keyword?: string
+    role_name?: RoleType | undefined,
+    keyword?: string | undefined
   ): Promise<{
     pager: Pager;
     userList: UserModel[];
-    role_name?: RoleType;
-    keyword?: string;
+    role_name?: RoleType | undefined;
+    keyword?: string | undefined;
   }> {
     const res = await this.get<Base<User[]>>({
       url: "/api/v1/users",

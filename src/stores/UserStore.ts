@@ -34,8 +34,8 @@ export default class UserStore {
   async getUserList(
     page?: number,
     per?: number,
-    roleName?: RoleType,
-    keyword?: string
+    roleName?: RoleType | undefined,
+    keyword?: string | undefined
   ) {
     const res = await this.api.getUserList(page, per, roleName, keyword);
     this.pager = res.pager;
