@@ -1,12 +1,14 @@
-import React, { Component } from "react";
 import "./TaskList.scss";
-import { observer, inject } from "mobx-react";
-import { Table, Icon, Dropdown, Popconfirm, Menu, Modal } from "antd";
-import TaskStore from "../../../../stores/TaskStore";
+
+import { Dropdown, Icon, Menu, Modal, Popconfirm, Table } from "antd";
+import React, { Component } from "react";
+import { inject, observer } from "mobx-react";
+
 import { Link } from "react-router-dom";
-import TaskModel from "models/TaskModel";
-import TaskForm from "../task-form/TaskForm";
 import { TaskFieldValues } from "../task-form/TaskForm";
+import TaskForm from "../task-form/TaskForm";
+import TaskModel from "models/TaskModel";
+import TaskStore from "../../../../stores/TaskStore";
 
 const MenuItem = Menu.Item;
 
@@ -244,6 +246,7 @@ export default class TaskList extends Component<TaskListProps, TaskListState> {
           visible={modalVisible}
           footer={null}
           onCancel={this.closeModal}
+          destroyOnClose={true}
         >
           <TaskForm
             onSave={actionType === "create" ? this.createTask : this.updateTask}

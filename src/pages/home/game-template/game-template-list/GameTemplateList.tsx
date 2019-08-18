@@ -1,14 +1,16 @@
-import React, { Component } from "react";
 import "./GameTemplateList.scss";
-import { observer, inject } from "mobx-react";
-import GameTemplateStore from "stores/GameTemplateStore";
-import { Table, Dropdown, Icon, Menu, Popconfirm, Modal } from "antd";
-import GameTemplateModel from "../../../../models/GameTemplateModel";
-import { Link } from "react-router-dom";
+
+import { Dropdown, Icon, Menu, Modal, Popconfirm, Table } from "antd";
+import React, { Component } from "react";
+import { inject, observer } from "mobx-react";
+
 import { GameTemplateFieldValues } from "../game-template-form/GameTemplateForm";
 import GameTemplateForm from "../game-template-form/GameTemplateForm";
-import moment from "moment";
+import GameTemplateModel from "../../../../models/GameTemplateModel";
+import GameTemplateStore from "stores/GameTemplateStore";
+import { Link } from "react-router-dom";
 import { dateFormat } from "../../../../constants/index";
+import moment from "moment";
 
 const MenuItem = Menu.Item;
 
@@ -307,6 +309,7 @@ export default class GameTemplateList extends Component<
           visible={modalVisible}
           footer={null}
           onCancel={this.closeModal}
+          destroyOnClose={true}
         >
           <GameTemplateForm
             onSave={
